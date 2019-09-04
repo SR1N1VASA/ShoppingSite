@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" >
+</head>
+
+<body>
+	<div th:replace="common/header :: navbar" />
+		<div class="row" style="margin-bottom: -40px; margin-top: -50px; background-color: #f0f0f0;">
+		 <div class="col-xs-8" style="margin-top: -10px;">
+				<h2 class="section-headline">
+					<h2 class="section-headline">
+					Hello 
+						<span
+							th:text="${user}? ${#strings.toUpperCase(user.username)} : 'User'"></span>
+							these are the books
+					</h2>
+				</h2>
+			</div>
+			<div style="background-image: url(/image/wood.png);width: 100%; height: 150px;">
+			<div class="col-xs-4 " >
+			<a th:href="@{/}">
+				<img src="/image/logo.png" class="img-responsive"  width="160" height="170" align="right"/> </a>
+			</div>
+			
+		<hr/>	
+</div>
+		
+		<div class="row" style="margin-top: 40px;border-left: 36px solid white">
+			<div class="col-xs-2" style="text-align:center">
+				<div >
+				<form th:action="@{/searchByCategory}" method="post">
+				
+				<button id="updateUserInfoButton" type="submit"
+											class="btn btn-primary">Sort By Using Below fields</button>
+											<br/>
+											<br/>
+				<label for="category">Category</label> 
+				<select th:value="${category}" id="category" name="category"
+class="form-control" style="margin-top: 40px;">
+								<option value="All" selected="selected">ALL</option>
+								<option value="Management"
+									th:selected="(${category}=='Management')">Management</option>
+								<option value="Fiction"
+									th:selected="(${category}=='Fiction')">Fiction</option>
+								<option value="Engineering"
+									th:selected="(${category}=='Engineering')">Engineering</option>
+								<option value="Programming"
+									th:selected="(${category}=='Programming')">Programming</option>
+								<option value="Arts &amp; Literature"
+									th:selected="(${category}=='Arts &amp; Literature')">Arts
+									&amp; Literature</option>
+								
+							</select>
+							</br>
+						<label for="author">Author</label>
+							<select th:value="${author}" id="author" name="author"
+								class="form-control">
+								<option value="All" selected="selected">ALL</option>
+								<option value="Leonardo Da Vinci">Leonardo Da Vinci</option>
+								<option value="Benjamin Spock M.D.">Benjamin Spock M.D.</option>
+								<option value="Dale Carnegie">Dale Carnegie</option>
+								<option value="Bruce Tulgan">Bruce Tulgan</option>
+								<option value="Paul Scherz">Paul Scherz</option>
+								<option value="Jones & Bartlett Learning">Jones & Bartlett Learning</option>
+								<option value="William Kent Krueger">William Kent Krueger</option>
+								<option value="Herbert Schildt">Herbert Schildt</option>
+								<option value="Srinivas Ayachitula">Srinivas Ayachitula</option>
+							</select>	
+							</br>
+							
+							<label for="language">Language</label>
+							<select th:value="${language}" id="language" name="language"
+								class="form-control">
+								<option value="All" selected="selected">ALL</option>
+								<option value="english">English</option>
+								<option value="spanish">Spanish</option>
+							</select> <span class="help-block">Author
+								of the book</span></br>
+								
+								
+							<label for="publisher">Publisher</label>
+							<select th:value="${publisher}" id="publisher" name="publisher"
+								class="form-control">
+								<option value="All" selected="selected">ALL</option>
+								<option value="Hal Leonard">Hal Leonard</option>
+								<option value="Black Dog & Leventhal">Black Dog & Leventhal</option>
+								<option value="Pocket Books">Pocket Books</option>
+								<option value="Jossey-Bass">Jossey-Bass</option>
+								<option value="McGraw-Hill Education TAB">McGraw-Hill Education TAB</option>
+								<option value="Jones & Bartlett Learning">Jones & Bartlett Learning</option>
+								<option value="Atria Books">Atria Books</option>
+								<option value="McGraw-Hill Education">McGraw-Hill Education</option>
+								<option value="Rajnikanth">Rajnikanth</option>
+								
+							</select> <span class="help-block">publisher
+								of the book</span>	
+								</br>
+											
+							<label for="format">Format</label>
+							<select th:value="${format}" id="format" name="format"
+								class="form-control">
+								<option value="All" selected="selected">ALL</option>
+								<option value="paperback">Paperback</option>
+								<option value="hardcover">Hardcover</option>
+							</select>
+							</br>
+								<label for="stars">Ratings and Above</label>		
+							<select th:value="${stars}" id="stars" name="stars"
+								class="form-control">
+								<option value="All" selected="selected"></option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
+							</br>
+						
+							<div class="col-xs-6 col-xs-offset-0">
+							<label for="ourPrice1">Price</label>
+							<span  class="input-group-addon">Rs.</span> <input 
+									th:value="${ourPrice1}" type="number" name="ourPrice1" step="0.01"
+									class="form-control" id="ourPrice1" placeholder="0" />
+									
+							</div>
+							<label for="ourPrice1">Range</label>
+
+							<div class="col-xs-6">
+							
+							<span class="input-group-addon">Rs.</span> <input
+									th:value="${ourPrice2}" type="number" name="ourPrice2" step="0.01"
+									class="form-control" id="ourPrice2" placeholder="0" />
+							</div>
+						</br>					
+				
+				</form>
+				
+				</div>
+				
+			</div>
+			
+			<div class="col-xs-10" style="border-right: 18px solid white">
+				<div th:if="${emptyList}">
+					<h5 style="font-style: italic;">Oops, no result is found. Try
+						something else or try again later.</h5>
+				</div>
+
+				<table border="0" id="bookList">
+					<thead>
+						<tr>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="book-item" data-th-each="book : ${bookList}" >
+							<td>
+								<div th:if="${book != null}">
+									<div class="row" style="margin-bottom: 50px;">
+										<div class="col-xs-3">
+											<a th:href="@{/bookDetail?id=}+${book.id}"><img 
+												class="img-responsive shelf-book"
+												th:src="#{adminPath}+@{/image/book/}+${book.id}+'.png'" /></a>
+										</div>
+										<div class="col-xs-8" >
+											<a th:href="@{/bookDetail?id=}+${book.id}"><h4
+													th:text="${book.title}"></h4></a> <span
+												th:text="${book.publicationDate}"></span>
+											<p th:text="${book.author}"></p>
+											<a th:href="@{/bookDetail?id=}+${book.id}"><span
+												th:text="${#strings.capitalize(book.format)}"></span></a> <span
+												th:text="${book.numberOfPages}"><span> pages</span></span><br />
+
+											<a th:href="@{/bookDetail?id=}+${book.id}"><span
+												style="font-size: x-large; color: #db3208;">Rs.<span
+													th:text="${#numbers.formatDecimal(book.ourPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span></a>
+
+											<span style="text-decoration: line-through;">Rs.<span
+												th:text="${#numbers.formatDecimal(book.listPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>
+
+											<p th:utext="${#strings.abbreviate(book.description, 1000)}"></p>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- end of container -->
+	
+	
+<div th:replace="common/header :: footer"/>
+
+	<div th:replace="common/header :: body-bottom-scripts" />
+	
+	<script th:inline="none">
+		$(document).ready(function() {
+			$('#bookList').DataTable({
+				"lengthMenu":[[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering":false,
+				stateSave:true
+			});
+			
+			$("#bookList").on('page.dt', function() {
+				$('html, body').animate({
+					scrollTop: $('#bookList').offset().top
+				}, 200);
+			});
+		});
+		</script>
+
+</body>
+</html>
